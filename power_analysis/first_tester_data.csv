@@ -1,0 +1,6 @@
+﻿pair,non_ala_seconds,ala_seconds,difference,outlier,
+1,68.00,110.00,-42.00,TRUE,
+2,127.00,50.00,77.00,FALSE,
+3,119.00,138.00,-19.00,FALSE,
+4,149.00,64.00,85.00,FALSE,
+5,143.00,283.00,-140.00,TRUE,
