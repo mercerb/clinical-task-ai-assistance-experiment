@@ -41,7 +41,7 @@ run_outcome_summary <- function(ala_exp_data, image_folder) {
     # print(p_all)
     ggsave(sprintf("%s/outcome_deviation_both.jpeg", image_folder), p_all)
 
-    ## Plot: Diameter & length deviation, for each run
+    ## Plot: Diameter & length deviation, per run
     summary <- ala_exp_data %>%
         group_by(ALA, Run) %>%
         dplyr::summarize(
@@ -72,7 +72,45 @@ run_outcome_summary <- function(ala_exp_data, image_folder) {
     title <- "Average & Std. Dev for Stent Results, All Runs"
     p_deviation_len_dia <- p_length_deviation + p_dia_deviation + plot_annotation(tag_levels = "I")
     # print(p_deviation_len_dia)
-    ggsave(sprintf("%s/outcome_deviation_both_all_runs.jpeg", image_folder), p_deviation_len_dia)
+    ggsave(sprintf("%s/outcome_deviation_both_all_runs.jpeg", image_folder), p_deviation_len_dia, width=9, height=4, dpi=300)
+
+    ## Plot: Diameter & length deviation, per participant
+    summary_tester <- ala_exp_data %>%
+        group_by(ALA, Tester) %>%
+        dplyr::summarize(
+            mean.length = mean(ResultTreatableLength, na.rm = TRUE),
+            mean.diameter = mean(ResultMinTreatableDia, na.rm = TRUE),
+            sd.length = sd(ResultTreatableLength, na.rm = TRUE),
+            sd.diameter = sd(ResultMinTreatableDia, na.rm = TRUE)
+        )
+
+    tester_map = c("Tester1" = "1", "Tester2" = "2", "Tester3" = "3", "Tester4" = "4", 
+                "Tester5" = "5", "Tester6" = "6", "Tester7" = "7", "Tester8" = "8", "Tester9" = "9")
+    p_length_deviation_tester <- bar_plot_with_sddev(
+        df = summary_tester,
+        x = "Tester",
+        y = summary_tester$mean.length,
+        y_dev = summary_tester$sd.length,
+        fill = "ALA"
+    ) +
+        labs(title = "Treatable length with & without ALA", x = "Tester", y = "Treatable Length (mm)") + 
+        scale_x_discrete(labels=tester_map)
+
+    p_dia_deviation_tester <- bar_plot_with_sddev(
+        df = summary_tester,
+        x = "Tester",
+        y = summary_tester$mean.diameter,
+        y_dev = summary_tester$sd.diameter,
+        fill = "ALA"
+    ) +
+        labs(title = "Minimum diameter with & without ALA", x = "Tester", y = "Minimum Diameter (mm)") +
+        scale_x_discrete(labels=tester_map)
+
+    title <- "Average & Std. Dev for Stent Results Per Tester"
+    all_tester <- p_length_deviation_tester + p_dia_deviation_tester + plot_annotation(tag_levels = "I")
+    p_deviation_len_dia_tester <- all_tester
+    # print(p_deviation_len_dia_tester)
+    ggsave(sprintf("%s/outcome_deviation_both_all_testers.jpeg", image_folder), p_deviation_len_dia_tester, width=9, height=4, dpi=300)
 
     ## Check normality
     # Plot distribution and Q-Q plot

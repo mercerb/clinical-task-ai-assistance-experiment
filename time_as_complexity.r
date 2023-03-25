@@ -66,7 +66,7 @@ run_time_complexity_analysis <- function(ala_exp_data) {
     title_both <- "Average time spent without ALA as a proxy for complexity"
     p_all <- non_ala_duration_by_pair + time_savings_by_complexity_plot + plot_annotation(tag_levels = "I")
     print(p_all)
-    ggsave("images_normal/complexity_both.jpeg", p_all, width = 12, height = 8, dpi = 200)
+    ggsave("images_normal/complexity_both.jpeg", p_all, width = 12, height = 6, dpi = 200)
 
     # Next, relate change in SD for length due to ALA against the 'complexity' seconds
     # Result: homoscedastic - the SDs are pretty much the same regardless of complexity

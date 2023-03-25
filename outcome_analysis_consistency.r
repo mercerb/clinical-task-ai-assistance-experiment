@@ -13,8 +13,8 @@ run_outcome_consistency <- function(ala_exp_data, image_folder) {
         dplyr::group_by(Run, ALA) %>%
         dplyr::summarize(
             "Length" = round(mean(ResultTreatableLength, na.rm = TRUE), 2),
-            "Dia" = round(mean(ResultMinTreatableDia, na.rm = TRUE), 2),
             "Length (SD)" = round(sd(ResultTreatableLength, na.rm = TRUE), 2),
+            "Dia" = round(mean(ResultMinTreatableDia, na.rm = TRUE), 2),
             "Dia (SD)" = round(sd(ResultMinTreatableDia, na.rm = TRUE), 2)
         )
     print(summary)
